@@ -1,9 +1,8 @@
 pipeline {
-  agent {
+agent {
     docker {
-      image 'abhishekf5/maven-abhishek-docker-agent:v1'
-      // FIX 1: Added --entrypoint='' to prevent container startup crashes
-      // FIX 2: Mounted .m2 cache to prevent PluginContainerExceptions and speed up builds
+      // Changed to an official Maven image running Java 17
+      image 'maven:3.9.6-eclipse-temurin-17'
       args '--user root -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/.m2:/root/.m2 --entrypoint=\'\'' 
     }
   }
