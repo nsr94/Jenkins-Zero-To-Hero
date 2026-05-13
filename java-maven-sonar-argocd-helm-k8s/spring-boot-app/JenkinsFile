@@ -25,11 +25,14 @@ pipeline {
     }
 
     stage('Build and Test') {
-      steps {
-        // FIX 4: Added -U flag to force update Maven dependencies (fixes corrupted JARs)
-        sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && mvn clean package -U'
-      }
-    }
+  steps {
+    // Delete the specific corrupted package or the entire repository cache
+    sh 'rm -rf /root/.m2/repository/commons-lang/commons-lang/'
+    // OR wipe everything: sh 'rm -rf /root/.m2/repository/*'
+    
+    sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && mvn clean package -U'
+  }
+}
 
     stage('Static Code Analysis') {
       steps {
